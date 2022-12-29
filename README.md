@@ -1,0 +1,2 @@
+# smartEdu
+smartEdu project
