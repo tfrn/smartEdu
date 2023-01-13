@@ -10,14 +10,16 @@ const pageRoute = require('./routes/pageRoute');
 const courseRoute = require('./routes/courseRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const registerRoute = require('./routes/registerRoute');
+const dotenv = require('dotenv').config();
 
 const app = express();
 mongoose.set('strictQuery', true);
+
 //template engine
 app.set('view engine', 'ejs');
 
 // connect db
-mongoose.connect('mongodb://127.0.0.1:27017/smartEdu')
+mongoose.connect(process.env.MONGOOSE_CONNECT)
   .then(() => console.log('Connected!'));
 
 // GLOBAL VARIABLE
@@ -29,10 +31,10 @@ app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 // bu ikisi req.body için gerekli. (ekspressjs sitesinden req.body diye aranarak bakılabilir.) olmazsa, db'ye post gönderirken sıkıntı çıkar. 
 app.use(session({
-  secret: 'my_keyboard_keyboard',
-  resave: false,
+  secret: process.env.MONGO_SECRET,
+  resave: false, 
   saveUninitialized: true, // cookie parserına gerek yok.
-  store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/smartEdu' })
+  store: MongoStore.create({ mongoUrl: process.env.MONGOOSE_CONNECT })
 }));
 
 app.use(flash());
